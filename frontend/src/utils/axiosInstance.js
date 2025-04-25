@@ -3,7 +3,7 @@ import axios from "axios";
 import { getToken } from "./auth";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_baseURL, // your backend base URL
+  baseURL: import.meta.env.VITE_BASE_URL, // your backend base URL
   headers: {
     "Content-Type": "application/json",
   },
