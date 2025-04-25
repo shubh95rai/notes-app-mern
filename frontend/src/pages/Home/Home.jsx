@@ -94,7 +94,7 @@ export default function Home() {
   }
 
   async function updateIsPinned(noteId) {
-    if (updatingId === noteId) return; // prevent multiple clicks
+    if (updatingNoteId === noteId) return; // prevent multiple clicks
 
     setUpdatingNoteId(noteId);
 
