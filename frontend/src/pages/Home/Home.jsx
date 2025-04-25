@@ -93,6 +93,16 @@ export default function Home() {
   }
 
   async function updateIsPinned(noteId) {
+    // Optimistically update UI
+    setAllNotes((prevNotes) => {
+      return prevNotes.map((note) => {
+        if (note._id === noteId) {
+          return { ...note, isPinned: !note.isPinned };
+        }
+        return note;
+      });
+    });
+
     try {
       const response = await axiosInstance.put(`/update-note-pinned/${noteId}`);
       if (response.data.success) {
@@ -100,6 +110,13 @@ export default function Home() {
       }
     } catch (error) {
       console.log(error.response.data.message);
+
+      // Revert optimistic update on failure
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === noteId ? { ...note, isPinned: !note.isPinned } : note
+        )
+      );
     }
   }
 
