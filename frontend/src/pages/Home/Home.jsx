@@ -23,6 +23,7 @@ export default function Home() {
   const [allNotes, setAllNotes] = useState(null);
 
   const [isSearch, setIsSearch] = useState(false);
+  const [updatingNoteId, setUpdatingNoteId] = useState(null);
 
   const navigate = useNavigate();
 
@@ -93,6 +94,10 @@ export default function Home() {
   }
 
   async function updateIsPinned(noteId) {
+    if (updatingId === noteId) return; // prevent multiple clicks
+
+    setUpdatingNoteId(noteId);
+
     // Optimistically update UI
     setAllNotes((prevNotes) => {
       return prevNotes.map((note) => {
@@ -117,6 +122,8 @@ export default function Home() {
           note.id === noteId ? { ...note, isPinned: !note.isPinned } : note
         )
       );
+    } finally {
+      setUpdatingNoteId(null);
     }
   }
 
