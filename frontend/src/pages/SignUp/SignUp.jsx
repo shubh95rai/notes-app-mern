@@ -5,12 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { setToken } from "../../utils/auth";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -45,6 +47,7 @@ export default function SignUp() {
 
     //sign up API call
     try {
+      setIsLoading(true);
       const response = await axiosInstance.post("/create-account", {
         name,
         email,
@@ -70,6 +73,8 @@ export default function SignUp() {
       } else {
         setError("An expected error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -109,9 +114,11 @@ export default function SignUp() {
 
             {error && <p className="text-red-500 text-xs  mb-2">{error}</p>}
 
-            <button className="btn-primary" type="submit">
+            {/* <button className="btn-primary" type="submit">
               Create Account
-            </button>
+            </button> */}
+
+            <LoadingButton pending={isLoading}>Create Account</LoadingButton>
 
             <p className="text-center text-sm mt-4">
               Already have an account?{" "}

@@ -34,15 +34,15 @@ body {
   }
 
   .btn-primary {
-    @apply text-white w-full bg-my-primary rounded-lg p-2 my-1 hover:bg-blue-600  text-sm font-medium;
+    @apply !text-white !w-full !bg-my-primary !rounded-lg !p-2 !my-1 hover:!bg-blue-600 !text-sm !font-medium;
   }
 
   .icon-btn {
     @apply text-xl text-slate-300 cursor-pointer hover:text-my-primary;
   }
 
-  .input-label{
-    @apply text-xs text-slate-400
+  .input-label {
+    @apply text-xs text-slate-400;
   }
 }
 

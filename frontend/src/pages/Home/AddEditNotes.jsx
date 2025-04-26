@@ -3,16 +3,19 @@ import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "sonner";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function AddEditNotes({ noteData, getAllNotes, type, onClose }) {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // add note
   async function addNewNote() {
     try {
+      setIsLoading(true);
       const response = await axiosInstance.post("/add-note", {
         title,
         content,
@@ -34,12 +37,15 @@ export default function AddEditNotes({ noteData, getAllNotes, type, onClose }) {
       } else {
         setError("An expected error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
   // edit note
   async function editNote() {
     try {
+      setIsLoading(true);
       const response = await axiosInstance.put(`/edit-note/${noteData._id}`, {
         title,
         content,
@@ -62,6 +68,8 @@ export default function AddEditNotes({ noteData, getAllNotes, type, onClose }) {
       } else {
         setError("An expected error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -124,14 +132,20 @@ export default function AddEditNotes({ noteData, getAllNotes, type, onClose }) {
         <TagInput tags={tags} setTags={setTags} />
       </div>
 
-      {error && <p className="text-red-500 text-xs mt-4">{error}</p>}
+      {error && <p className="text-red-500 text-xs mt-3">{error}</p>}
 
-      <button
+      {/* <button
         className="btn-primary font-medium mt-5 p-3"
         onClick={handleAddNote}
       >
         {type === "add" ? "ADD" : "UPDATE"}
-      </button>
+      </button> */}
+
+      <div className="mt-2" onClick={handleAddNote}>
+        <LoadingButton pending={isLoading}>
+          {type === "add" ? "ADD" : "UPDATE"}
+        </LoadingButton>
+      </div>
     </div>
   );
 }

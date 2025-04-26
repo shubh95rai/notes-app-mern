@@ -5,11 +5,13 @@ import { useState } from "react";
 import { validateEmail } from "../../utils/helper";
 import { setToken } from "../../utils/auth";
 import axiosInstance from "../../utils/axiosInstance";
+import LoadingButton from "@/components/LoadingButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,6 +40,7 @@ export default function Login() {
 
     //login API call
     try {
+      setIsLoading(true);
       const response = await axiosInstance.post("/login", {
         email,
         password,
@@ -57,6 +60,8 @@ export default function Login() {
       } else {
         setError("An expected error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -88,9 +93,11 @@ export default function Login() {
 
             {error && <p className="text-red-500 text-xs mb-2">{error}</p>}
 
-            <button className="btn-primary" type="submit">
+            {/* <button className="btn-primary" type="submit">
               Login
-            </button>
+            </button> */}
+
+            <LoadingButton pending={isLoading}>Login</LoadingButton>
 
             <p className="text-center text-sm mt-4">
               Not registered yet?{" "}
