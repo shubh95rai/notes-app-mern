@@ -10,6 +10,8 @@ export default function NoteCard({
   onEdit,
   onDelete,
   onPinNote,
+  noteId,
+  updatingNoteId,
 }) {
   return (
     <div className="border rounded-lg p-4 bg-white hover:shadow-md transition-all ease-in-out duration-300">
@@ -21,10 +23,13 @@ export default function NoteCard({
           </span>
         </div>
 
-        <MdOutlinePushPin
-          onClick={onPinNote}
-          className={`icon-btn ${isPinned ? "text-my-primary" : "text-slate-300"}`}
-        />
+        <button onClick={onPinNote} disabled={updatingNoteId === noteId}>
+          <MdOutlinePushPin
+            className={`icon-btn ${
+              isPinned ? "text-my-primary" : "text-slate-300"
+            }`}
+          />
+        </button>
       </div>
 
       <p className="text-sm text-slate-700 mt-2 line-clamp-2">{content}</p>

@@ -163,6 +163,8 @@ export default function Home() {
                   onPinNote={() => {
                     updateIsPinned(note._id);
                   }}
+                  noteId={note._id}
+                  updatingNoteId={updatingNoteId}
                 />
               );
             })}
